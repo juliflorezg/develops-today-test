@@ -9,7 +9,7 @@ function CountryList({ countries }) {
       <ul>
         {countries && countries.map((country, i) => (
           <li key={country.countryCode + i}>
-            <Link to={`/country/${country.countryCode}`}>{country.name}</Link>
+            <Link to={`/country/${country.countryCode}`}>{country.name || country.commonName}</Link>
           </li>
         ))}
       </ul>

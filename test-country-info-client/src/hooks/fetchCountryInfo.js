@@ -1,22 +1,16 @@
 import { useState, useEffect } from "react";
 
 
-const useFetchCountryInfo = ({ code }) => {
+const useFetchCountryInfo = (code) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
 
-    async function getAvailableCountries() {
+    async function getCountryInfo() {
       try {
-        const response = await fetch('/api/nest/v1/countries', {
-          method: 'POST',
-          body: JSON.stringify({
-            code: code
-          })
-          // https://date.nager.at/api/v3/CountryInfo
-        });
+        const response = await fetch(`/api/nest/v1/countries/country-info/${code}`);
         console.log({ response })
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -33,7 +27,7 @@ const useFetchCountryInfo = ({ code }) => {
       }
 
     }
-    getAvailableCountries()
+    getCountryInfo()
   }, [])
 
   return [data, loading, error]

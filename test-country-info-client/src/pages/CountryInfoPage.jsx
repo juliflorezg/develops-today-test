@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
-import { getCountryInfo, getPopulationData, getFlagUrl } from '../services/api';
-import PopulationChart from '../components/PopulationChart';
+// import { getCountryInfo, getPopulationData, getFlagUrl } from '../services/api';
+// import PopulationChart from '../components/PopulationChart';
 import useFetchCountryInfo from '../hooks/fetchCountryInfo';
 
 function CountryInfoPage() {
   const { code } = useParams();
   // const [countryInfo, setCountryInfo] = useState({});
 
-  const [countryInfo, loadingCountryInfo, errorCountruInfo] = useFetchCountryInfo();
+  const [countryInfo, loadingCountryInfo, errorCountryInfo] = useFetchCountryInfo(code);
 
   const [populationData, setPopulationData] = useState([]);
   const [flagUrl, setFlagUrl] = useState('');
@@ -24,17 +24,25 @@ function CountryInfoPage() {
   //   };
   //   fetchCountryData();
   // }, [code]);
+  console.log({ countryInfo })
 
   return (
-    <div>
+    <div className={`max mx-auto`}>
 
       <div>
         {loadingCountryInfo ? (
           <p>Loading country info...</p>
-        ) : errorCountruInfo ? (
-          <p>Error: {errorCountruInfo.message}</p>
+        ) : errorCountryInfo ? (
+          <p>Error: {errorCountryInfo.message}</p>
         ) : (
-          <h1>{countryInfo.commonName}</h1>
+          <div className='flex justify-center gap-3 max-w-96 mx-auto '>
+            <h1>{countryInfo.countryName}</h1>
+            <div>
+              <img src={countryInfo.flagURL} alt="flag for country" />
+
+            </div>
+
+          </div>
         )}
       </div>
 
