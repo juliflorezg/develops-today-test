@@ -10,7 +10,13 @@ function CountryListPage() {
   return (
     <div>
       {loadingCountries ? (
-        <p>Loading...</p>
+        <div className='h-screen flex justify-center items-center'>
+          <div>
+            <p className='text-2xl font-bold'>Loading country list...</p>
+
+          </div>
+
+        </div>
       ) : error ? (
         <p>Error: {error.message}</p>
       ) : (

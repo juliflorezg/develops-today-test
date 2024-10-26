@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 
 
 const useFetchCountryInfo = (code) => {
+  console.log("code::", code)
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -10,6 +11,7 @@ const useFetchCountryInfo = (code) => {
 
     async function getCountryInfo() {
       try {
+        setLoading(true)
         const response = await fetch(`/api/nest/v1/countries/country-info/${code}`);
         console.log({ response })
         if (!response.ok) {
@@ -28,7 +30,7 @@ const useFetchCountryInfo = (code) => {
 
     }
     getCountryInfo()
-  }, [])
+  }, [code])
 
   return [data, loading, error]
 };
