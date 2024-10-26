@@ -1,0 +1,48 @@
+version: '3.7'
+services:
+  client-react-nginx:
+    image: juliflorezg/devs-today-test-app-react-client-nginx:latest
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        order: start-first
+    init: true
+    networks:
+      - frontend
+    ports:
+      - 80:8080
+    healthcheck:
+      test: ['CMD', 'curl', '-f', 'http://localhost:8080/ping']
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+  api-node:
+    image: juliflorezg/devs-today-test-app-api-nest:latest
+    read_only: true
+    deploy:
+      mode: replicated
+      replicas: 1
+      update_config:
+        order: start-first
+    init: true
+    environment:
+      - DATABASE_URL_FILE=/run/secrets/database-url 
+    secrets:
+      - database-url
+    networks:
+      - frontend
+      - backend
+    ports:
+      - 3000:3000
+volumes:
+  pgdata:
+networks:
+  frontend:
+  backend:
+secrets:
+  database-url:
+    external: true
+  postgres-passwd:
+    external: true
