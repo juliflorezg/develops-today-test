@@ -14,7 +14,7 @@ function CountryListPage() {
       ) : error ? (
         <p>Error: {error.message}</p>
       ) : (
-        <CountryList countries={countries} />
+        <CountryList countries={countries} title="Country List" />
       )}
     </div>
   );

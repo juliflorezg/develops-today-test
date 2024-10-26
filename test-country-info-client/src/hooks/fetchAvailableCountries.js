@@ -21,6 +21,7 @@ const useFetchAvailableCountries = () => {
         setData(data);
         return data
       } catch (error) {
+        console.log(error)
         setError(error.message);
       } finally {
         setLoading(false);

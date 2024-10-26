@@ -3,6 +3,7 @@ import { useParams, Link } from 'react-router-dom';
 // import { getCountryInfo, getPopulationData, getFlagUrl } from '../services/api';
 // import PopulationChart from '../components/PopulationChart';
 import useFetchCountryInfo from '../hooks/fetchCountryInfo';
+import CountryList from '../components/CountryList';
 
 function CountryInfoPage() {
   const { code } = useParams();
@@ -27,7 +28,7 @@ function CountryInfoPage() {
   console.log({ countryInfo })
 
   return (
-    <div className={`max mx-auto`}>
+    <div className={`mx-auto min-h-screen py-16`}>
 
       <div>
         {loadingCountryInfo ? (
@@ -35,14 +36,17 @@ function CountryInfoPage() {
         ) : errorCountryInfo ? (
           <p>Error: {errorCountryInfo.message}</p>
         ) : (
-          <div className='flex justify-center gap-3 max-w-96 mx-auto '>
-            <h1>{countryInfo.countryName}</h1>
-            <div>
-              <img src={countryInfo.flagURL} alt="flag for country" />
+          <>
+            <div className='flex flex-col md:flex-row items-center justify-center gap-3 w-full px-4 bg-teal-100'>
+              <h1 className='text-blue-950'>{countryInfo.countryName}</h1>
+              <div className='max-w-36'>
+                <img src={countryInfo.flagURL} alt="flag for country" className='w-full' />
+              </div>
 
             </div>
 
-          </div>
+            <CountryList countries={countryInfo.borders} title="Country Borders" />
+          </>
         )}
       </div>
 
