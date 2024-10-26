@@ -5,17 +5,14 @@ import CountryList from '../components/CountryList';
 function CountryListPage() {
   const [countries, loadingCountries, error] = useAvailableCountries();
 
-  console.log(countries)
 
   return (
     <div>
       {loadingCountries ? (
-        <div className='h-screen flex justify-center items-center'>
+        <div className="h-screen flex justify-center items-center">
           <div>
-            <p className='text-2xl font-bold'>Loading country list...</p>
-
+            <p className="text-2xl font-bold">Loading country list...</p>
           </div>
-
         </div>
       ) : error ? (
         <p>Error: {error.message}</p>
