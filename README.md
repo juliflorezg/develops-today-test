@@ -7,6 +7,8 @@ This project consists of two main applications:
 
 I additionally included `Dockerfile`s for both the React app and the Nest app for containerizing the applications and eventually running them in a AWS EC2 instance and make it accessible trough the internet, all of this using the make targets provided in the `Makefile` which in turn run docker swarm to manage the containers remotely.
 
+On the other hand, I added a github action for building the app and deploy docker images to Docker Hub on every Pull Request, so the process gets automatized. A next step would involve deploying the app to AWS EC2 instance on another job. 
+
 ## Prerequisites
 
 - [Node.js](https://nodejs.org/) (>= 14.x)
