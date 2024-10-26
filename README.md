@@ -128,7 +128,3 @@ If you encounter any issues, please check:
 - Docker is running (if using Docker).
 
 ---
-
-## License
-
-This project is licensed under the MIT License.
