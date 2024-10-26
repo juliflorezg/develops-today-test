@@ -1,9 +1,15 @@
 import { Module } from '@nestjs/common';
-import { CountriesModule } from './countries/countries.module';
+import { ConfigModule } from '@nestjs/config';
+import { HttpModule } from '@nestjs/axios';
+import { CountriesService } from './countries/countries.service';
 
 @Module({
-  imports: [CountriesModule],
-  controllers: [],
-  providers: [],
+  imports: [
+    ConfigModule.forRoot({
+      isGlobal: true, // Makes the configuration available globally
+    }),
+    HttpModule,
+  ],
+  providers: [CountriesService],
 })
-export class AppModule {}
+export class AppModule { }

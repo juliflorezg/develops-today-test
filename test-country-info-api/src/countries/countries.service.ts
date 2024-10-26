@@ -1,5 +1,6 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, HttpStatus, HttpException } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
 
@@ -13,22 +14,32 @@ export interface CountryInfo {
 
 @Injectable()
 export class CountriesService {
-  constructor(private readonly httpService: HttpService) {}
+  private readonly nagerApiBaseUrl: string;
+  private readonly countriesNowApiBaseUrl: string;
+
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly configService: ConfigService,
+  ) {
+    this.nagerApiBaseUrl = this.configService.get<string>('NAGER_API_BASE_URL');
+    this.countriesNowApiBaseUrl = this.configService.get<string>('COUNTRIES_NOW_API_BASE_URL');
+  }
 
   async getAvailableCountries() {
     const res = await lastValueFrom(
-      this.httpService.get('https://date.nager.at/api/v3/AvailableCountries'),
+      this.httpService.get(`${this.nagerApiBaseUrl}/AvailableCountries`),
     );
 
     return res.data;
   }
+
   async getCountryInfo(code: string) {
     let iso2Code: string;
     let countryName: string;
 
     let flagData;
     const countryInfoData: AxiosResponse<CountryInfo> = await lastValueFrom(
-      this.httpService.get(`https://date.nager.at/api/v3/CountryInfo/${code}`),
+      this.httpService.get(`${this.nagerApiBaseUrl}/CountryInfo/${code}`),
     );
 
     countryName = countryInfoData.data.commonName;
@@ -36,7 +47,7 @@ export class CountriesService {
     try {
       const populationData = await lastValueFrom(
         this.httpService.post(
-          `https://countriesnow.space/api/v0.1/countries/population`,
+          `${this.countriesNowApiBaseUrl}/countries/population`,
           {
             country: countryName,
           },
@@ -45,7 +56,7 @@ export class CountriesService {
 
       const isoCodesRes = await lastValueFrom(
         this.httpService.post(
-          `https://countriesnow.space/api/v0.1/countries/iso`,
+          `${this.countriesNowApiBaseUrl}/countries/iso`,
           {
             country: countryName,
           },
@@ -59,7 +70,7 @@ export class CountriesService {
       if (iso2Code !== 'not-found') {
         flagData = await lastValueFrom(
           this.httpService.post(
-            `https://countriesnow.space/api/v0.1/countries/flag/images`,
+            `${this.countriesNowApiBaseUrl}/countries/flag/images`,
             {
               iso2: iso2Code,
             },
@@ -77,7 +88,7 @@ export class CountriesService {
       };
     } catch (error) {
       throw new HttpException(
-        'Failed to fetch country exception',
+        'Failed to fetch country information',
         HttpStatus.INTERNAL_SERVER_ERROR,
       );
     }
